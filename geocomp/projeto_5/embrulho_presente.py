@@ -12,7 +12,7 @@ def Embrulho_Presente(l):
     pos_menor = posicao_menor(l)
     S = [None for i in range(len(l))]
 
-    l[pos_menor].hilight()
+    l[pos_menor].hilight("yellow")
 
     H = [pos_menor]
     cond = True
@@ -26,23 +26,17 @@ def Embrulho_Presente(l):
             i = 0
 
         for j in range(0, n):
-            ponto_t = l[j]
-            segm_t = Segment(l[H[h]], l[i])
-            segm_t.hilight()
-            ponto_t.hilight()
 
             if i != j and j != H[h] and not Esquerda(H[h], i, j, l):
-                if S[i] is not None:
-                    S[i].hilight("blue")
                 i = j
 
             control.sleep()
 
-            segm_t.hilight("blue")
-            ponto_t.hilight("blue")
-
         h += 1
         H.append(i)
+
+        segm_t = Segment(l[H[h-1]], l[H[h]])
+        segm_t.hilight()
 
         cond = (i != H[0])
 
@@ -58,8 +52,6 @@ def Embrulho_Presente(l):
                 segm_t.hilight()
 
         control.sleep()
-    print(H)
-
 
 # Encontra o ponto com a menor coordenada X.
 def posicao_menor(l):
@@ -76,6 +68,14 @@ def Esquerda(i, j, k, l):
     A = l[i]
     B = l[j]
     C = l[k]
+
+    segm = Segment(A, B)
+    C.hilight("blue")
+    segm.hilight("blue")
+    control.sleep()
+    segm.unhilight()
+    C.unhilight()
+
 
     det = area2(A, B, C)
 
