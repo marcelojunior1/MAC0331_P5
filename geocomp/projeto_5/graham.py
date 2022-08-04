@@ -1,12 +1,15 @@
 from math import inf
 
+from geocomp.common import control
 from geocomp.common.point import Point
 from geocomp.common.prim import *
+from geocomp.common.segment import Segment
 
 
 def Graham(l):
     print("\n")
     H = [0 for i in range(len(l))]
+    S = [Segment for i in range(len(l))]
     fila = ordena(l)
 
     H[0] = 0
@@ -14,14 +17,46 @@ def Graham(l):
     H[2] = 2
     h = 2
 
+    p0 = l[fila[H[0]][0]]
+    p1 = l[fila[H[1]][0]]
+    p2 = l[fila[H[2]][0]]
+    S[0] = (Segment(p0, p1))
+    S[1] = (Segment(p1, p2))
+
+    S[0].hilight()
+    S[1].hilight()
+
+    control.sleep()
+
     for k in range(3, len(fila)):
         j = h
         while not Esquerda(H[j - 1], H[j], k, l, fila):
             j = j - 1
 
         h = j + 1
+
+        if H[h] != 0:
+            S[h - 1].hilight(color_line="blue")
+
         H[h] = k
 
+        ponto1 = l[fila[H[h - 1]][0]]
+        ponto2 = l[fila[H[h]][0]]
+
+        S[h - 1] = Segment(ponto1, ponto2)
+        S[h - 1].hilight()
+
+        control.sleep()
+
+        if k == len(fila)-1:
+            print("OK", h)
+            ponto1 = l[fila[H[h]][0]]
+            ponto2 = l[fila[H[0]][0]]
+
+            S[h] = Segment(ponto1, ponto2)
+            S[h].hilight()
+
+    print(H)
     for i in range(len(H)):
         print(l[fila[H[i]][0]])
 
@@ -29,6 +64,7 @@ def Graham(l):
 def ordena(l):
     k = posicao_menor(l)
     origem = l[k]
+    origem.hilight()
     fila = para_coordenadas_polares(l, origem)
     mergesort(0, len(fila), fila)
 
