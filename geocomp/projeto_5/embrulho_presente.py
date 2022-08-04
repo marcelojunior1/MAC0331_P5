@@ -81,7 +81,7 @@ def Esquerda(i, j, k, l):
 
     # Colineares
     if det == 0:
-        print("Colineares: ", i, j, k)
+        #print("Colineares: ", i, j, k)
         return True
 
     return det > 0

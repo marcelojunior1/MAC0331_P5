@@ -63,9 +63,6 @@ def Graham(l):
             S.append(Segment(ponto1, ponto2))
             S[h].hilight()
 
-    for i in range(len(H)):
-        print(l[fila[H[i]][0]])
-
 
 # Cria a fila de pontos
 def ordena(l):
@@ -103,8 +100,8 @@ def Esquerda(i, j, k, l, fila):
 
     # Colineares
     if det == 0:
-        print("Colineares: ", i, j, k)
-        return True
+        #print("Colineares: ", i, j, k)
+        return False
 
     return det > 0
 
