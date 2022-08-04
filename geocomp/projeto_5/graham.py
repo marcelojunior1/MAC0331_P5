@@ -8,10 +8,10 @@ from geocomp.common.segment import Segment
 
 def Graham(l):
     print("\n")
-    H = [0 for i in range(len(l))]
-    S = [Segment for i in range(len(l))]
+
     fila = ordena(l)
 
+    H = [0 for i in range(len(l))]
     H[0] = 0
     H[1] = 1
     H[2] = 2
@@ -20,8 +20,7 @@ def Graham(l):
     p0 = l[fila[H[0]][0]]
     p1 = l[fila[H[1]][0]]
     p2 = l[fila[H[2]][0]]
-    S[0] = (Segment(p0, p1))
-    S[1] = (Segment(p1, p2))
+    S = [(Segment(p0, p1)), (Segment(p1, p2))]
 
     S[0].hilight()
     S[1].hilight()
@@ -36,31 +35,39 @@ def Graham(l):
         h = j + 1
 
         if H[h] != 0:
-            S[h - 1].hilight(color_line="blue")
+            p = len(S) - h + 1
+            for a in range(p):
+                S[len(S)-1].unhilight()
+                S.pop()
 
         H[h] = k
 
         ponto1 = l[fila[H[h - 1]][0]]
         ponto2 = l[fila[H[h]][0]]
 
-        S[h - 1] = Segment(ponto1, ponto2)
+        if len(S) == h - 1:
+            S.append(Segment(ponto1, ponto2))
+        else:
+            S[h - 1] = Segment(ponto1, ponto2)
+
         S[h - 1].hilight()
 
         control.sleep()
 
-        if k == len(fila)-1:
-            print("OK", h)
+        if k == len(fila) - 1:
             ponto1 = l[fila[H[h]][0]]
             ponto2 = l[fila[H[0]][0]]
 
-            S[h] = Segment(ponto1, ponto2)
+            print(S, len(S), h)
+
+            S.append(Segment(ponto1, ponto2))
             S[h].hilight()
 
-    print(H)
     for i in range(len(H)):
         print(l[fila[H[i]][0]])
 
 
+# Cria a fila de pontos
 def ordena(l):
     k = posicao_menor(l)
     origem = l[k]
@@ -71,6 +78,7 @@ def ordena(l):
     return fila
 
 
+# Encontra o ponto com menor coordenada Y
 def posicao_menor(l):
     p_i = 0
     for i in range(1, len(l)):
@@ -86,6 +94,13 @@ def Esquerda(i, j, k, l, fila):
     C = l[fila[k][0]]
     det = area2(A, B, C)
 
+    segm = Segment(A, B)
+    C.hilight("blue")
+    segm.hilight("blue")
+    control.sleep()
+    segm.unhilight()
+    C.unhilight()
+
     # Colineares
     if det == 0:
         print("Colineares: ", i, j, k)
@@ -94,6 +109,7 @@ def Esquerda(i, j, k, l, fila):
     return det > 0
 
 
+# Ordena a fila de pontos
 def mergesort(p, r, fila):
     if p < (r - 1):
         q = math.floor((p + r) / 2)
@@ -129,6 +145,7 @@ def intercala(p, q, r, fila):
             j -= 1
 
 
+# Transforma os pontos em coordenadas polares
 def para_coordenadas_polares(l, origem):
     tam_l = len(l)
     fila = []
